@@ -1,42 +1,42 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import {Header, Button, Icon, Table} from "semantic-ui-react"
 import ItemForm from './ItemForm'
 import ItemList from './ItemList'
 
 
-const Item =({id, menu_id, name, updateItem, deleteItem})=>{
+const Item =({id, name, updateItem, deleteItem})=>{
   const [edit, setEdit] = useState(false);
   const [items, setItems]= useState([]);
 
-  componentDidMount=()=>{
-    axios.get(`/api/menu/${menu_id}/items`)
+  useEffect(()=>{
+    axios.get(`/api/menu/${this.id}/items`)
     .then( res => {
       setItems(res.data)
     })
-  }
+  })
 
-  addItem=(name)=>{
-    axios.post(`/api/menu/${id}`, {name})
-    .then(res =>{
-      setItems([...items,res.data])
-    })
-  }
+  // addItem=(name)=>{
+  //   axios.post(`/api/menu/${this.id}`, {name})
+  //   .then(res =>{
+  //     setItems([...items,res.data])
+  //   })
+  // }
 
   // UpdateItem=(id)=>{}
 
-  // deleteItem=(id)=>{
-  //   axios.delete(`/api/menu/${menu_id}/item/${id}`)
-  //   .then( res => {
-  //     const {menus} = this.state;
-  //     this.setState({menus:menus.filter( t => t.id !== id),})
-  //   })
-  // }
+  deleteItem=(id)=>{
+    axios.delete(`/api/menu/${this.id}/item/${id}`)
+    .then( res => {
+      const {menus} = this.state;
+      this.setState({menus:menus.filter( t => t.id !== id),})
+    })
+  }
 
 
   return(
     <>
-      {/* <Table.Row>
+      <Table.Row>
         <Table.Cell>
           <Button
             icon
@@ -69,8 +69,8 @@ const Item =({id, menu_id, name, updateItem, deleteItem})=>{
           updateItem={updateItem}
           deleteItem={deleteItem}
         />
-      )} */}
-      </>
+      )}
+    </>
   )
 }
 
